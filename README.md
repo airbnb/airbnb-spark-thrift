@@ -1,19 +1,19 @@
 #  Data Source for Apache Spark
 
-A library for loadling Thrift data from [Spark SQL](http://spark.apache.org/docs/latest/sql-programming-guide.html).
+A library for loadling Thrift data into [Spark SQL](http://spark.apache.org/docs/latest/sql-programming-guide.html).
 
 ## Features
 
-It supports conversions between Spark SQL and Thrift records, making Thrift a first-class citizen in Spark.
-It derives Spark SQL schema from Thrift struct, and convert Thrift object to Spark Row in the runtime.
-Any nested structs, List/Set of non-primitive structs, or Map of non-primitive struct to non-primitive struct are all supported.
+It supports conversions from Thrift records to Spark SQL, making Thrift a first-class citizen in Spark.
+It automatically derives Spark SQL schema from Thrift struct and convert Thrift object to Spark Row in runtime.
+Any nested-structs are all support except Map key field needs to be primitive.
 
-It is especially useful when running spark streaming job to consume thrift events from different srtreaming soruces.
+It is especially useful when running spark streaming job to consume thrift events from different streaming sources.
 
 
 ## Supported types for Thrift -> Spark SQL conversion
 
-This library supports reading all Avro types. It uses the following mapping from Avro types to Spark SQL types:
+This library supports reading following types. It uses the following mapping from convert Thrift types to Spark SQL types:
 
 | Thrift Type | Spark SQL type |
 | --- | --- |
