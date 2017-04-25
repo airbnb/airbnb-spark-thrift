@@ -4,6 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+
     <groupId>com.airbnb</groupId>
     <artifactId>airbnb-spark-thrift</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -11,6 +12,28 @@
     <properties>
         <encoding>UTF-8</encoding>
     </properties>
+
+    <name>com.airbnb:airbnb-spark-thrift</name>
+    <description>A library for loadling Thrift data into Spark SQL</description>
+    <url>https://github.com/airbnb/airbnb-spark-thrift</url>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Liyin Tang</name>
+            <email>liyintang@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Jingwei Lu</name>
+            <email>jingweilu1984@gmail.com</email>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>

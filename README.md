@@ -1,6 +1,6 @@
 
 
-#  Data Source for Apache Spark
+# Spark Thrift Loader
 
 A library for loadling Thrift data into [Spark SQL](http://spark.apache.org/docs/latest/sql-programming-guide.html).
 
@@ -94,3 +94,10 @@ import com.airbnb.spark.thrift.ThriftParser
     })
  }
 ```
+
+## How to get started
+Clone the project and mvn package to get the artifact.
+
+
+## How to contribute
+Please send the PR here and cc @liyintang or @jingweilu1974 for reviewing
