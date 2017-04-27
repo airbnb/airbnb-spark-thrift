@@ -24,17 +24,6 @@
         </license>
     </licenses>
 
-    <developers>
-        <developer>
-            <name>Liyin Tang</name>
-            <email>liyintang@gmail.com</email>
-        </developer>
-        <developer>
-            <name>Jingwei Lu</name>
-            <email>jingweilu1984@gmail.com</email>
-        </developer>
-    </developers>
-
     <dependencies>
         <dependency>
             <groupId>org.scala-lang</groupId>
@@ -78,6 +67,35 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-test-source</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/test/scala/com/airbnb/spark/thrift</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.scala-tools</groupId>
                 <artifactId>maven-scala-plugin</artifactId>
