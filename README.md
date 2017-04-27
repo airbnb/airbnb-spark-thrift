@@ -2,6 +2,8 @@
 
 # Spark Thrift Loader
 [![Build Status](https://travis-ci.org/airbnb/airbnb-spark-thrift.svg)](https://travis-ci.org/airbnb/airbnb-spark-thrift)
+
+
 A library for loadling Thrift data into [Spark SQL](http://spark.apache.org/docs/latest/sql-programming-guide.html).
 
 ## Features
