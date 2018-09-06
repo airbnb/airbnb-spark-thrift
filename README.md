@@ -19,20 +19,21 @@ It is especially useful when running spark streaming job to consume thrift event
 
 This library supports reading following types. It uses the following mapping from convert Thrift types to Spark SQL types:
 
-| Thrift Type | Spark SQL type |
-| --- | --- |
+| Thrift Type | Spark SQL type | Notes |
+| --- | --- | --- |
 | bool | BooleanType |
 | i16 | ShortType |
 | i32 | IntegerType |
 | i64 | LongType |
 | double | DoubleType |
-| binary | StringType |
+| byte | ByteType |
+| ByteBuffer | BinaryType | 
 | string | StringType |
-| enum | String |
+| enum | String | This is the String representation of an enum |
 | list | ArrayType |
 | set | ArrayType |
-| map | MapType |
-| struct | StructType |
+| map | MapType / ArrayType | A map with non-primitive keys is converted to an Array[Struct(key, val)] |
+| struct / union| StructType | A recursively defined struct/union is converted to bytes |
 
 
 ## Examples
@@ -45,8 +46,6 @@ import com.airbnb.spark.thrift.ThriftSchemaConverter
 
 // this will return a StructType for the thrift class
 val thriftStructType = ThriftSchemaConverter.convert(ThriftExampleClass.getClass)
-
-
 ```
 
 ### Convert Thrift Object to Row in Spark
