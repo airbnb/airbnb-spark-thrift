@@ -2,22 +2,20 @@
 organization := "com.airbnb"
 name := "airbnb-spark-thrift"
 licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
-// TODO replace mslinn with your github id
-homepage := Some(url("https://github.com/example/project"))
+homepage := Some(url("https://github.com/airbnb/airbnb-spark-thrift"))
 scmInfo := Some(
   ScmInfo(
-    url(s"https://github.com/nwparker/$name"),
-    s"git@github.com:mslinn/$name.git"
+    url("https://github.com/airbnb/airbnb-spark-thrift"),
+    "https://github.com/airbnb/airbnb-spark-thrift.git"
   )
 )
-version := "1.0.1-SNAPSHOT"
+version := "2.0.1-SNAPSHOT"
 
 // Library Versions
-val scalaVer = "2.11.8"
-scalaVersion := scalaVer
+scalaVersion := "2.11.12"
 val javaVersion = "1.8"
 val sparkVersion = "2.0.0"
-crossScalaVersions := Seq("2.10.7", "2.11.12")
+crossScalaVersions := Seq("2.10.7", scalaVersion.value)
 
 libraryDependencies ++= Seq(
   "org.apache.thrift" % "libthrift" % "0.9.3",
@@ -81,10 +79,12 @@ Test / sourceGenerators += Def.task {
   import scala.collection.JavaConverters._
   import sys.process._
 
-  Seq("thrift", "-o", sourceDirectory.in(Test).value.getAbsolutePath, "--gen", "java",
+  sourceManaged.in(Test).value.mkdirs()
+
+  Seq("thrift", "-o", sourceManaged.in(Test).value.getAbsolutePath, "--gen", "java",
     s"${resourceDirectory.in(Test).value.getAbsoluteFile}/thrift/dummy.thrift")!
 
-  Files.find(Paths.get(sourceDirectory.in(Test).value.getAbsolutePath, "gen-java"), 999, (_, bfa) => bfa.isRegularFile)
+  Files.find(Paths.get(sourceManaged.in(Test).value.getAbsolutePath, "gen-java"), 999, (_, bfa) => bfa.isRegularFile)
     .iterator().asScala.toList
     .map(_.toFile)
 }
