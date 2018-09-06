@@ -94,7 +94,9 @@ import com.airbnb.spark.thrift.Thrift2SparkConverters
 ```
 
 ## How to get started
-Clone the project and mvn package to get the artifact.
+  1. Ensure you have `sbt` and `thrift` (thrift version 0.9.3) installed
+  2. Clone the project
+  3. run `sbt package` to get the artifact. If you wish to run tests, then run `sbt test`
 
 
 ## How to contribute
