@@ -40,35 +40,35 @@ This library supports reading following types. It uses the following mapping fro
 
 
 ### Convert Thrift Schema to StructType in Spark
-
 ```scala
-import com.airbnb.spark.thrift.ThriftSchemaConverter
+import com.airbnb.spark.thrift.Thrift2SparkConverters
 
 // this will return a StructType for the thrift class
-val thriftStructType = ThriftSchemaConverter.convert(ThriftExampleClass.getClass)
+val thriftStructType = Thrift2SparkConverters.convertThriftClassToStructType(classOf[ThriftExampleClass])
 ```
 
 ### Convert Thrift Object to Row in Spark
-
 ```scala
-import com.airbnb.spark.thrift.ThriftSchemaConverter
-import com.airbnb.spark.thrift.ThriftParser
+import com.airbnb.spark.thrift.Thrift2SparkConverters
 
 // this will return a StructType for the thrift class
-val thriftStructType = ThriftSchemaConverter.convert(ThriftExampleClass.getClass)
-val row =  ThriftParser.convertObject(
-                thriftObject,
-                thriftStructType)
+val row = Thrift2SparkConverters.convertThriftToRow(thriftObject)
+```
+
+### Convert Spark Row to Thrift Object
+```scala
+import com.airbnb.spark.thrift.Spark2ThriftConverters
+
+Spark2ThriftConverters.convertRowToThrift(classOf[ThriftExampleClass], sparkRowOfThriftExampleClass)
 ```
 
 ### Use cases: consume Kafka Streaming, where each event is a thrift object
 ```scala
-import com.airbnb.spark.thrift.ThriftSchemaConverter
-import com.airbnb.spark.thrift.ThriftParser
+import com.airbnb.spark.thrift.Thrift2SparkConverters
 
 
  directKafkaStream.foreachRDD(rdd => {
-    val schema = ThriftSchemaConverter.convert(ThriftExampleClass.getClass)
+    val schema = Thrift2SparkConverters.convertThriftClassToStructType(classOf[ThriftExampleClass])
 
      val deserializedEvents = rdd
        .map(_.message)
@@ -84,10 +84,7 @@ import com.airbnb.spark.thrift.ThriftParser
            }
        }).map(_.getEvent.asInstanceOf[TBaseType])
 
-       val rows: RDD[Row] = ThriftParser(
-           ThriftExampleClass.getClass,
-           deserializedEvents,
-           schema)
+       val rows: RDD[Row] = Thrift2SparkConverters.convertThriftToRow(deserializedEvents)
 
        val df = sqlContext.createDataFrame(rows, schema)
 

@@ -62,16 +62,8 @@ scalacOptions ++= Seq( // From https://tpolecat.github.io/2017/04/25/scalac-flag
   "-Ywarn-numeric-widen",              // Warn when numerics are widened.
   "-Ywarn-value-discard"               // Warn when non-Unit expression results are unused.
 )
-
 // The REPL can’t cope with -Ywarn-unused:imports or -Xfatal-warnings so turn them off for the console
 scalacOptions in (Compile, console) --= Seq("-Ywarn-unused:imports", "-Xfatal-warnings")
-
-scalacOptions in (Compile, doc) ++= baseDirectory.map {
-  (bd: File) => Seq[String](
-     "-sourcepath", bd.getAbsolutePath, // todo replace my-new-project with the github project name, and replace mslinn with your github id
-     "-doc-source-url", "https://github.com/mslinn/my-new-project/tree/master€{FILE_PATH}.scala"
-  )
-}.value
 
 // Generate thrift classes and add compiled classes to project
 Test / sourceGenerators += Def.task {
