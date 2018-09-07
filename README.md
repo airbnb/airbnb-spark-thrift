@@ -19,57 +19,56 @@ It is especially useful when running spark streaming job to consume thrift event
 
 This library supports reading following types. It uses the following mapping from convert Thrift types to Spark SQL types:
 
-| Thrift Type | Spark SQL type |
-| --- | --- |
+| Thrift Type | Spark SQL type | Notes |
+| --- | --- | --- |
 | bool | BooleanType |
 | i16 | ShortType |
 | i32 | IntegerType |
 | i64 | LongType |
 | double | DoubleType |
-| binary | StringType |
+| byte | ByteType |
+| ByteBuffer | BinaryType | 
 | string | StringType |
-| enum | String |
+| enum | String | This is the String representation of an enum |
 | list | ArrayType |
 | set | ArrayType |
-| map | MapType |
-| struct | StructType |
+| map | MapType / ArrayType | A map with non-primitive keys is converted to an Array[Struct(key, val)] |
+| struct / union| StructType | A recursively defined struct/union is converted to bytes |
 
 
 ## Examples
 
 
 ### Convert Thrift Schema to StructType in Spark
-
 ```scala
-import com.airbnb.spark.thrift.ThriftSchemaConverter
+import com.airbnb.spark.thrift.Thrift2SparkConverters
 
 // this will return a StructType for the thrift class
-val thriftStructType = ThriftSchemaConverter.convert(ThriftExampleClass.getClass)
-
-
+val thriftStructType = Thrift2SparkConverters.convertThriftClassToStructType(classOf[ThriftExampleClass])
 ```
 
 ### Convert Thrift Object to Row in Spark
-
 ```scala
-import com.airbnb.spark.thrift.ThriftSchemaConverter
-import com.airbnb.spark.thrift.ThriftParser
+import com.airbnb.spark.thrift.Thrift2SparkConverters
 
 // this will return a StructType for the thrift class
-val thriftStructType = ThriftSchemaConverter.convert(ThriftExampleClass.getClass)
-val row =  ThriftParser.convertObject(
-                thriftObject,
-                thriftStructType)
+val row = Thrift2SparkConverters.convertThriftToRow(thriftObject)
+```
+
+### Convert Spark Row to Thrift Object
+```scala
+import com.airbnb.spark.thrift.Spark2ThriftConverters
+
+Spark2ThriftConverters.convertRowToThrift(classOf[ThriftExampleClass], sparkRowOfThriftExampleClass)
 ```
 
 ### Use cases: consume Kafka Streaming, where each event is a thrift object
 ```scala
-import com.airbnb.spark.thrift.ThriftSchemaConverter
-import com.airbnb.spark.thrift.ThriftParser
+import com.airbnb.spark.thrift.Thrift2SparkConverters
 
 
  directKafkaStream.foreachRDD(rdd => {
-    val schema = ThriftSchemaConverter.convert(ThriftExampleClass.getClass)
+    val schema = Thrift2SparkConverters.convertThriftClassToStructType(classOf[ThriftExampleClass])
 
      val deserializedEvents = rdd
        .map(_.message)
@@ -85,10 +84,7 @@ import com.airbnb.spark.thrift.ThriftParser
            }
        }).map(_.getEvent.asInstanceOf[TBaseType])
 
-       val rows: RDD[Row] = ThriftParser(
-           ThriftExampleClass.getClass,
-           deserializedEvents,
-           schema)
+       val rows: RDD[Row] = Thrift2SparkConverters.convertThriftToRow(deserializedEvents)
 
        val df = sqlContext.createDataFrame(rows, schema)
 
@@ -98,7 +94,9 @@ import com.airbnb.spark.thrift.ThriftParser
 ```
 
 ## How to get started
-Clone the project and mvn package to get the artifact.
+  1. Ensure you have `sbt` and `thrift` (thrift version 0.9.3) installed
+  2. Clone the project
+  3. run `sbt package` to get the artifact. If you wish to run tests, then run `sbt test`
 
 
 ## How to contribute
