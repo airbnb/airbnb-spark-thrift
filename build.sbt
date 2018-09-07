@@ -77,11 +77,12 @@ Test / sourceGenerators += Def.task {
 
   Seq("find", ".", "-name", "\"Dummy.thrift\"")!
 
+  Seq("pwd")!
 
-  Seq("ls", "-la", s"${resourceDirectory.in(Test).value.getAbsoluteFile}/thrift/dummy.thrift")!
+  Seq("ls", "-la", s"${resourceDirectory.in(Test).value.getAbsoluteFile}/thrift/Dummy.thrift")!
 
   Seq("thrift", "-o", sourceManaged.in(Test).value.getAbsolutePath, "--gen", "java",
-    s"${resourceDirectory.in(Test).value.getAbsoluteFile}/thrift/dummy.thrift")!
+    s"${resourceDirectory.in(Test).value.getAbsoluteFile}/thrift/Dummy.thrift")!
 
   Files.find(Paths.get(sourceManaged.in(Test).value.getAbsolutePath, "gen-java"), 999, (_, bfa) => bfa.isRegularFile)
     .iterator().asScala.toList
