@@ -1,16 +1,11 @@
 language: scala
-scala:
-#   - 2.10.7
-   - 2.11.12
+scala: 2.11.12
 jdk: oraclejdk8
 sudo: false
 script: sbt clean +test
 before_install:
-  - echo "Running Setup Commands"
-  - sudo apt-get update -qq
-  # ---Setup sbt---
-#  - curl --create-dirs -L -o $HOME/.sbt/launchers/1.2.1/sbt-launch.jar http://central.maven.org/maven2/org/scala-sbt/sbt-launch/1.2.1/sbt-launch-1.2.1.jar
   # ---Setup Thrift---
+  - sudo apt-get update -qq
   # http://thrift.apache.org/docs/install/debian
   - sudo apt-get install automake bison flex g++ git libboost-all-dev libevent-dev libssl-dev libtool make pkg-config
   # http://archive.apache.org/dist/thrift/

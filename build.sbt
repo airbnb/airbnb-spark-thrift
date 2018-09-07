@@ -73,14 +73,6 @@ Test / sourceGenerators += Def.task {
 
   sourceManaged.in(Test).value.mkdirs()
 
-  Seq("find", "-L", ".")!
-
-  Seq("find", ".", "-name", "\"Dummy.thrift\"")!
-
-  Seq("pwd")!
-
-  Seq("ls", "-la", s"${resourceDirectory.in(Test).value.getAbsoluteFile}/thrift/Dummy.thrift")!
-
   Seq("thrift", "-o", sourceManaged.in(Test).value.getAbsolutePath, "--gen", "java",
     s"${resourceDirectory.in(Test).value.getAbsoluteFile}/thrift/Dummy.thrift")!
 
